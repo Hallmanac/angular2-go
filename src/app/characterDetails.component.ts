@@ -13,23 +13,23 @@ import {Character} from './character';
 	`]
 })
 export class CharacterDetailsComponent{
-		private _character: Character;
+		public character: Character;
 		private _characterId: number;
 
   		constructor(private _routeParams: RouteParams, private _characterService: CharacterService) {
-		  this._characterId = +_routeParams.get('characterId'); 
-	   }
-	   
-	   get currentCharacter(){
-		   return this._character || this.getCharacter(this._characterId);
+		  this._characterId = +_routeParams.get('characterId'); // The + symbol casts the string to a number type
+		  this.getCharacter(this._characterId);
 	   }
 	   
 	   private getCharacter(characterId: number){
-		   this._characterService.getCharacter(characterId).then(this.setCharacter).catch(this.catchCharacterError);
+		   this._characterService.getCharacter(characterId)
+		   .then((responseCharacter) => {return this.setCharacter(responseCharacter);} )
+		   .catch(this.catchCharacterError); 
 	   }
 	   
 	   private setCharacter(givenCharacter: Character){
-		   this.currentCharacter = givenCharacter;
+		   this.character = givenCharacter;
+		   return this.character;
 	   }
 	   
 	   private catchCharacterError(reason: any){
