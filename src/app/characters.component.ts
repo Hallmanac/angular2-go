@@ -2,6 +2,7 @@ import {Component, NgFor, NgIf, View} from 'angular2/angular2';
 import {Router} from 'angular2/router';
 import {CharacterService} from './character.service';
 import {Character} from './character';
+import {Routes} from './routes.config';
 
 @Component({ selector: 'my-characters' })
 @View({
@@ -27,13 +28,17 @@ export class CharactersComponent {
   private _characters: Character[];
   public currentCharacter: Character;
 
-  constructor(private _characterService: CharacterService) { }
+  constructor(private _characterService: CharacterService, private _router: Router) { 
+    
+  }
 
   get characters() {
     return this._characters || this.getCharacters()
   }
 
-  onSelect(character: Character) { this.currentCharacter = character; }
+  onSelect(character: Character) { 
+    this._router.navigate([`/${Routes.characterDetails.as}`, {characterId: character.id}])
+   }
 
   /////////////////
 
